@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Courses</title>
+        {%load static%}
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div class="container">
+        <h1>Success! Welcome, {{ request.session.name}} </h1>
+
+        <h2>Here is your appointment for today,  {{ today_date }}</h2>
+            <div><hr>
+            {% for q in today_appt %}
+                     <table class="table">
+                        <tr class="success">
+                            <th>Tasks</th>
+                            <th>Time</th> 
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        <tr>
+                            <td> {{q.tasks}} </a></td>
+                            <td>{{q.time}}</td>
+                            <td>{{q.status}}</td>
+                            <td><a href="/appointments/{{q.id}}"> Edit </a> || <a href="/delete/{{q.id}}"> Delete </a></td>
+                        </tr>
+                    </table>
+
+            </div>
+            {% endfor %}
+            <h2>Your Other appointments</h2>
+            <div><hr>
+                {% for q in later_appt %}
+                    <table class="table">
+                        <tr class="success">
+                            <th>Tasks</th>
+                            <th>Date</th>
+                            <th>Time</th> 
+                        </tr>
+                        <tr>
+                            <td>{{q.tasks}}</td>
+                            <td>{{q.date}}</td>
+                            <td>{{q.time}}</td>
+                        </tr>
+                    </table>
+                {% endfor %}
+            </div>
+            <h3>Add a new appointment</h3>
+            <form action="/add" method='post'>
+            {% csrf_token %}
+            Date :<br>
+            <input type="date" name="date"><br>
+            Time: <br>
+            <input type="time" name="time"><br>
+            Tasks: <br>
+            <input type="text" name="tasks"><br>
+            <input type="submit" value="Add">
+            </form>
+            {% if messages %}
+                {% for message in messages %}
+                    <h3>{{ message }}</h3>
+                {% endfor %}
+            {% endif %}
+
+                <a href="/logout">Logout</a>
+        </div>
+    </body> 
+</html>
